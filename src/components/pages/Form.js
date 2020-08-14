@@ -18,6 +18,7 @@ const defaultState = {
    passwordError1: "",
    passwordError2: "",
    dobError: "",
+   storyError: "",
 };
 
 class Form extends React.Component {
@@ -130,6 +131,37 @@ class Form extends React.Component {
          submission.dob = parsedDob;
       }
 
+      // get favorite team
+      const favTeamInput = document.getElementById("favorite-team").value;
+      submission.favTeam = favTeamInput;
+
+      // get followGamesVia
+      const followGamesViaInputs = {
+         tv: document.getElementById("tv").checked,
+         radio: document.getElementById("radio").checked,
+         internet: document.getElementById("internet").checked,
+         stadium: document.getElementById("stadium").checked,
+      };
+      submission.followGamesVia = followGamesViaInputs;
+
+      // get otherSportsInterests
+      const otherSportsInterestInputs = {
+         fantasy: document.getElementById("fantasy").checked,
+         betting: document.getElementById("betting").checked,
+         playing: document.getElementById("playing").checked,
+         videoGames: document.getElementById("video-games").checked,
+         history: document.getElementById("history").checked,
+      };
+      submission.otherSportsInterests = otherSportsInterestInputs;
+
+      // check their fan story
+      const fanStoryInput = document.getElementById("fan-story").value;
+      if (fanStoryInput.length > STORY_WORD_LIMIT) {
+         this.setState({ storyError: " Please shorten your text." });
+      } else {
+         submission.fanStory = fanStoryInput;
+      }
+
       return submission;
    }
 
@@ -156,7 +188,7 @@ class Form extends React.Component {
          <div className="container">
             <h1>NFL Fan Club Membership Application</h1>
             <form formNoValidate>
-               <div className="card">
+               <div className="card mt-4">
                   <div className="card-body">
                      <h5 className="card-title">Account Information</h5>
                      <h6 className="card-subtitle mb-2 text-muted">
@@ -165,7 +197,6 @@ class Form extends React.Component {
                      <div className="form-group">
                         <div className="form-row">
                            <div className="col-12 col-sm-6 mb-3 mb-sm-0">
-                              {/* <label for="formGroupExampleInput">Example label</label> */}
                               <input
                                  type="text"
                                  className={classnames({
@@ -282,15 +313,12 @@ class Form extends React.Component {
                      </div>
                   </div>
                </div>
-               <div className="card">
+               <div className="card mt-4">
                   <div className="card-body">
                      <h5 className="card-title">Fan Information</h5>
                      <div className="form-group">
                         <div className="form-row">
                            <div className="col-12 col-sm-6 mb-3 mb-sm-0">
-                              {/* <label htmlFor="exampleFormControlSelect1">
-                           Example select
-                        </label> */}
                               <select
                                  className="form-control"
                                  id="favorite-team"
@@ -406,11 +434,11 @@ class Form extends React.Component {
                                     className="form-check-input"
                                     type="checkbox"
                                     value=""
-                                    id="playing-sports"
+                                    id="playing"
                                  />
                                  <label
                                     className="form-check-label"
-                                    htmlFor="playing-sports"
+                                    htmlFor="playing"
                                  >
                                     Playing Sports
                                  </label>
@@ -434,11 +462,11 @@ class Form extends React.Component {
                                     className="form-check-input"
                                     type="checkbox"
                                     value=""
-                                    id="sports-history"
+                                    id="history"
                                  />
                                  <label
                                     className="form-check-label"
-                                    htmlFor="sports-history"
+                                    htmlFor="history"
                                  >
                                     Sports History
                                  </label>
@@ -460,53 +488,18 @@ class Form extends React.Component {
                         }}
                         id="fan-story"
                      ></textarea>
-                     {/* <div
-                        className={classnames({
-                           "text-danger": checkIsOver(
-                              document.getElementById("fan-story").value.length,
-                              STORY_WORD_LIMIT
-                           ),
-                        })}
-                     >
-                        {document.getElementById("fan-story").value.length}/
-                        {STORY_WORD_LIMIT}
-                     </div> */}
                      <Counter
                         count={this.state.storyCharCount}
                         max={STORY_WORD_LIMIT}
                      />
+                     <span className="text-danger">
+                        {this.state.storyError}
+                     </span>
                   </div>
                </div>
-               {/* <div className="row">
-                  <div className="col">
-                     <div className="form-check">
-                        <input
-                           type="checkbox"
-                           className="form-check-input"
-                           id="exampleCheck1"
-                        />
-                        <label
-                           className="form-check-label"
-                           htmlFor="exampleCheck1"
-                        >
-                           Check me out
-                        </label>
-                     </div>
-                     <div className="form-group">
-                        <label htmlFor="exampleFormControlTextarea1">
-                           Example textarea
-                        </label>
-                        <textarea
-                           className="form-control"
-                           id="exampleFormControlTextarea1"
-                           rows="3"
-                        ></textarea>
-                     </div>
-                  </div>
-               </div> */}
                <div
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn btn-primary mt-4"
                   onClick={() => {
                      this.submit();
                   }}
@@ -519,4 +512,4 @@ class Form extends React.Component {
    }
 }
 
-export default withRouter(Form); // this is required for the redirect to work
+export default withRouter(Form);
