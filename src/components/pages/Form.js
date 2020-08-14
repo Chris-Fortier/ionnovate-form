@@ -25,6 +25,7 @@ const defaultState = {
    phoneError: "",
    passwordError1: "",
    passwordError2: "",
+   dobError: "",
 };
 
 class Form extends React.Component {
@@ -84,7 +85,8 @@ class Form extends React.Component {
             phoneError: "Please enter valid 10-digit phone number.",
          });
       } else {
-         submission.phone = phoneInput;
+         // submit it without nonnumeric characters stripped out
+         submission.phone = phoneInput.replace(/\D/g, "");
       }
 
       // test password
@@ -121,10 +123,22 @@ class Form extends React.Component {
          submission.password = passwordInput1;
       }
 
+      // check if they entered a date
+      const dobInput = document.getElementById("date-of-birth").value;
+      const parsedDob = Date.parse(dobInput);
+      if (dobInput === "") {
+         this.setState({ dobError: "Please enter your date of birth" });
+      } else if (parsedDob >= Date.now()) {
+         this.setState({ dobError: "Your birthday cannot be in the future." });
+      } else {
+         submission.dob = parsedDob;
+      }
+
       return submission;
    }
 
    async submit() {
+      // await used to make sure we get the error states before the if statement
       const submission = await this.validateForm();
 
       // if there are no errors, console log the submission
@@ -138,91 +152,117 @@ class Form extends React.Component {
    render() {
       return (
          <div className="container">
-            <h1>Form Title</h1>
+            <h1>NFL Fan Club Membership Application</h1>
             <form formNoValidate>
-               <div className="form-row">
-                  <div className="col-12 col-sm-6 mb-3 mb-sm-0">
-                     <input
-                        type="text"
-                        className={classnames({
-                           "form-control": true,
-                           "is-invalid": this.state.firstNameError,
-                        })}
-                        placeholder="First name"
-                        id="first-name"
-                     />
-                     <div className="text-danger">
-                        {this.state.firstNameError}
+               <div className="card">
+                  <div className="card-body">
+                     <h5 className="card-title">Account Information</h5>
+                     <div className="form-row">
+                        <div className="col-12 col-sm-6 mb-3 mb-sm-0">
+                           {/* <label for="formGroupExampleInput">Example label</label> */}
+                           <input
+                              type="text"
+                              className={classnames({
+                                 "form-control": true,
+                                 "is-invalid": this.state.firstNameError,
+                              })}
+                              placeholder="First name"
+                              id="first-name"
+                           />
+                           <div className="text-danger">
+                              {this.state.firstNameError}
+                           </div>
+                        </div>
+                        <div className="col-12 col-sm-6 mb-3 mb-sm-0">
+                           <input
+                              type="text"
+                              className={classnames({
+                                 "form-control": true,
+                                 "is-invalid": this.state.lastNameError,
+                              })}
+                              placeholder="Last name"
+                              id="last-name"
+                           />
+                           <div className="text-danger">
+                              {this.state.lastNameError}
+                           </div>
+                        </div>
                      </div>
-                  </div>
-                  <div className="col-12 col-sm-6 mb-3 mb-sm-0">
-                     <input
-                        type="text"
-                        className={classnames({
-                           "form-control": true,
-                           "is-invalid": this.state.lastNameError,
-                        })}
-                        placeholder="Last name"
-                        id="last-name"
-                     />
-                     <div className="text-danger">
-                        {this.state.lastNameError}
+                     <div className="form-row">
+                        <div className="col-12 col-sm-6 mb-3 mb-sm-0">
+                           <input
+                              type="text"
+                              className={classnames({
+                                 "form-control": true,
+                                 "is-invalid": this.state.emailError,
+                              })}
+                              placeholder="Email"
+                              id="email"
+                           />
+                           <div className="text-danger">
+                              {this.state.emailError}
+                           </div>
+                        </div>
+                        <div className="col-12 col-sm-6 mb-3 mb-sm-0">
+                           <input
+                              type="tel"
+                              className={classnames({
+                                 "form-control": true,
+                                 "is-invalid": this.state.phoneError,
+                              })}
+                              placeholder="Phone"
+                              id="phone"
+                           />
+                           <div className="text-danger">
+                              {this.state.phoneError}
+                           </div>
+                        </div>
                      </div>
-                  </div>
-               </div>
-               <div className="form-row">
-                  <div className="col-12 col-sm-6 mb-3 mb-sm-0">
-                     <input
-                        type="text"
-                        className={classnames({
-                           "form-control": true,
-                           "is-invalid": this.state.emailError,
-                        })}
-                        placeholder="Email"
-                        id="email"
-                     />
-                     <div className="text-danger">{this.state.emailError}</div>
-                  </div>
-                  <div className="col-12 col-sm-6 mb-3 mb-sm-0">
-                     <input
-                        type="text"
-                        className={classnames({
-                           "form-control": true,
-                           "is-invalid": this.state.phoneError,
-                        })}
-                        placeholder="Phone"
-                        id="phone"
-                     />
-                     <div className="text-danger">{this.state.phoneError}</div>
-                  </div>
-               </div>
-               <div className="form-row">
-                  <div className="col-12 col-sm-6 mb-3 mb-sm-0">
-                     <input
-                        type="password"
-                        className={classnames({
-                           "form-control": true,
-                           "is-invalid": this.state.passwordError1,
-                        })}
-                        placeholder="Enter a password"
-                        id="password-1"
-                     />
-                     <div className="text-danger">
-                        {this.state.passwordError1}
+                     <div className="form-row">
+                        <div className="col-12 col-sm-6 mb-3 mb-sm-0">
+                           <input
+                              type="password"
+                              className={classnames({
+                                 "form-control": true,
+                                 "is-invalid": this.state.passwordError1,
+                              })}
+                              placeholder="Enter a password"
+                              id="password-1"
+                           />
+                           <div className="text-danger">
+                              {this.state.passwordError1}
+                           </div>
+                        </div>
+                        <div className="col-12 col-sm-6 mb-3 mb-sm-0">
+                           <input
+                              type="password"
+                              className={classnames({
+                                 "form-control": true,
+                                 "is-invalid": this.state.passwordError2,
+                              })}
+                              placeholder="Re-enter password"
+                              id="password-2"
+                           />
+                           <div className="text-danger">
+                              {this.state.passwordError2}
+                           </div>
+                        </div>
                      </div>
-                  </div>
-                  <div className="col-12 col-sm-6 mb-3 mb-sm-0">
-                     <input
-                        type="password"
-                        className={classnames({
-                           "form-control": true,
-                           "is-invalid": this.state.passwordError2,
-                        })}
-                        placeholder="Re-enter password"
-                        id="password-2"
-                     />
-                     <div className="text-danger">
-                        {this.state.passwordError2}
+                     <div className="form-row">
+                        <div className="col-12 col-sm-6 mb-3 mb-sm-0">
+                           <input
+                              type="date"
+                              className={classnames({
+                                 "form-control": true,
+                                 "is-invalid": this.state.dobError,
+                              })}
+                              placeholder="Enter a date of birth"
+                              id="date-of-birth"
+                           />
+                           <div className="text-danger">
+                              {this.state.dobError}
+                           </div>
+                        </div>
                      </div>
                   </div>
                </div>
