@@ -1,12 +1,14 @@
 import React from "react";
-import { withRouter } from "react-router-dom"; // a React element for linking
+import { withRouter } from "react-router-dom";
 import classnames from "classnames";
 import { isEqual } from "lodash";
 import { teams } from "../../data/teams";
-
-// eslint-disable-next-line
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const PHONE_REGEX = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/; // https://regexlib.com Laurence O'Donnell
+import {
+   EMAIL_REGEX,
+   PHONE_REGEX,
+   STORY_WORD_LIMIT,
+} from "../../utils/helpers";
+import Counter from "../ui/Counter";
 
 const defaultState = {
    firstNameError: "",
@@ -29,7 +31,6 @@ class Form extends React.Component {
       console.log("Submitting form");
 
       // initialize errors to false
-      // let hasErrors = false;
       this.setState(defaultState);
 
       // initialize the submission object
@@ -72,6 +73,7 @@ class Form extends React.Component {
          //    phoneError: "Please enter your phone number.",
          // });
          submission.phone = "";
+      // an empty phone # will be considered valid since this is optional
       else if (!PHONE_REGEX.test(phoneInput)) {
          this.setState({
             phoneError: "Please enter valid 10-digit phone number.",
@@ -294,6 +296,167 @@ class Form extends React.Component {
                            </div>
                         </div>
                      </div>
+                     <div className="form-group">
+                        <div className="form-row">
+                           <div className="col-12 col-sm-6 mb-3 mb-sm-0">
+                              <p>How do you follow the games?</p>
+                              <div className="form-check">
+                                 <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="tv"
+                                 />
+                                 <label
+                                    className="form-check-label"
+                                    htmlFor="tv"
+                                 >
+                                    TV
+                                 </label>
+                              </div>
+                              <div className="form-check">
+                                 <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="radio"
+                                 />
+                                 <label
+                                    className="form-check-label"
+                                    htmlFor="radio"
+                                 >
+                                    Radio
+                                 </label>
+                              </div>
+                              <div className="form-check">
+                                 <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="internet"
+                                 />
+                                 <label
+                                    className="form-check-label"
+                                    htmlFor="internet"
+                                 >
+                                    Internet
+                                 </label>
+                              </div>
+                              <div className="form-check">
+                                 <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="stadium"
+                                 />
+                                 <label
+                                    className="form-check-label"
+                                    htmlFor="stadium"
+                                 >
+                                    At the stadium
+                                 </label>
+                              </div>
+                           </div>
+                           <div className="col-12 col-sm-6 mb-3 mb-sm-0">
+                              <p>What other sports interests do you have?</p>
+                              <div className="form-check">
+                                 <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="fantasy"
+                                 />
+                                 <label
+                                    className="form-check-label"
+                                    htmlFor="fantasy"
+                                 >
+                                    Fantasy Sports
+                                 </label>
+                              </div>
+                              <div className="form-check">
+                                 <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="betting"
+                                 />
+                                 <label
+                                    className="form-check-label"
+                                    htmlFor="betting"
+                                 >
+                                    Sports Betting
+                                 </label>
+                              </div>
+                              <div className="form-check">
+                                 <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="playing-sports"
+                                 />
+                                 <label
+                                    className="form-check-label"
+                                    htmlFor="playing-sports"
+                                 >
+                                    Playing Sports
+                                 </label>
+                              </div>
+                              <div className="form-check">
+                                 <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="video-games"
+                                 />
+                                 <label
+                                    className="form-check-label"
+                                    htmlFor="video-games"
+                                 >
+                                    Sports Video Games
+                                 </label>
+                              </div>
+                              <div className="form-check">
+                                 <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    id="sports-history"
+                                 />
+                                 <label
+                                    className="form-check-label"
+                                    htmlFor="sports-history"
+                                 >
+                                    Sports History
+                                 </label>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <textarea
+                        rows="6"
+                        defaultValue={""}
+                        style={{ width: "100%" }}
+                        placeholder={`In ${STORY_WORD_LIMIT} words or less, describe how you became a fan.`}
+                        // onChange={(e) => this.setAnswerText(e)}
+                        id="fan-story"
+                     ></textarea>
+                     {/* <div
+                        className={classnames({
+                           "text-danger": checkIsOver(
+                              document.getElementById("fan-story").value.length,
+                              STORY_WORD_LIMIT
+                           ),
+                        })}
+                     >
+                        {document.getElementById("fan-story").value.length}/
+                        {STORY_WORD_LIMIT}
+                     </div> */}
+                     <Counter
+                        count={
+                           50 //document.getElementById("fan-story").value.length
+                        }
+                        max={STORY_WORD_LIMIT}
+                     />
                   </div>
                </div>
                {/* <div className="row">
