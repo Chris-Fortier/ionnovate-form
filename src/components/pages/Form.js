@@ -18,7 +18,6 @@ const defaultState = {
    passwordError1: "",
    passwordError2: "",
    dobError: "",
-   favTeamError: "",
 };
 
 class Form extends React.Component {
@@ -138,8 +137,14 @@ class Form extends React.Component {
       // await used to make sure we get the error states before the if statement
       const submission = await this.validateForm();
 
+      // generate the state that we should match if there are no errors
+      const compareState = {
+         ...defaultState,
+         storyCharCount: this.state.storyCharCount,
+      };
+
       // if there are no errors, console log the submission
-      if (isEqual(this.state, defaultState)) {
+      if (isEqual(this.state, compareState)) {
          console.log("Submission looks good", submission);
       } else {
          console.log("There were errors", this.state);
@@ -154,7 +159,7 @@ class Form extends React.Component {
                <div className="card">
                   <div className="card-body">
                      <h5 className="card-title">Account Information</h5>
-                     <h6 class="card-subtitle mb-2 text-muted">
+                     <h6 className="card-subtitle mb-2 text-muted">
                         * Fields marked with an asterisk are required.
                      </h6>
                      <div className="form-group">
@@ -257,7 +262,9 @@ class Form extends React.Component {
                      <div className="form-group">
                         <div className="form-row">
                            <div className="col-12 col-sm-6 mb-3 mb-sm-0">
-                              <label for="date-of-birth">Date of birth</label>
+                              <label htmlFor="date-of-birth">
+                                 Date of birth
+                              </label>
                               <input
                                  type="date"
                                  className={classnames({
