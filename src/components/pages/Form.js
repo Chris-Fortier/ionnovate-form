@@ -24,14 +24,17 @@ const defaultState = {
 class Form extends React.Component {
    constructor(props) {
       super(props);
-      this.state = defaultState;
+      this.state = { ...defaultState, storyCharCount: 0 };
    }
 
    validateForm() {
       console.log("Submitting form");
 
-      // initialize errors to false
-      this.setState(defaultState);
+      // initialize errors
+      this.setState({
+         ...defaultState,
+         storyCharCount: this.state.storyCharCount,
+      });
 
       // initialize the submission object
       const submission = {};
@@ -151,6 +154,9 @@ class Form extends React.Component {
                <div className="card">
                   <div className="card-body">
                      <h5 className="card-title">Account Information</h5>
+                     <h6 class="card-subtitle mb-2 text-muted">
+                        * Fields marked with an asterisk are required.
+                     </h6>
                      <div className="form-group">
                         <div className="form-row">
                            <div className="col-12 col-sm-6 mb-3 mb-sm-0">
@@ -161,7 +167,7 @@ class Form extends React.Component {
                                     "form-control": true,
                                     "is-invalid": this.state.firstNameError,
                                  })}
-                                 placeholder="First name"
+                                 placeholder="First name*"
                                  id="first-name"
                               />
                               <div className="text-danger">
@@ -175,7 +181,7 @@ class Form extends React.Component {
                                     "form-control": true,
                                     "is-invalid": this.state.lastNameError,
                                  })}
-                                 placeholder="Last name"
+                                 placeholder="Last name*"
                                  id="last-name"
                               />
                               <div className="text-danger">
@@ -193,7 +199,7 @@ class Form extends React.Component {
                                     "form-control": true,
                                     "is-invalid": this.state.emailError,
                                  })}
-                                 placeholder="Email"
+                                 placeholder="Email*"
                                  id="email"
                               />
                               <div className="text-danger">
@@ -225,7 +231,7 @@ class Form extends React.Component {
                                     "form-control": true,
                                     "is-invalid": this.state.passwordError1,
                                  })}
-                                 placeholder="Enter a password"
+                                 placeholder="Enter a password*"
                                  id="password-1"
                               />
                               <div className="text-danger">
@@ -239,7 +245,7 @@ class Form extends React.Component {
                                     "form-control": true,
                                     "is-invalid": this.state.passwordError2,
                                  })}
-                                 placeholder="Re-enter password"
+                                 placeholder="Re-enter password*"
                                  id="password-2"
                               />
                               <div className="text-danger">
@@ -251,13 +257,14 @@ class Form extends React.Component {
                      <div className="form-group">
                         <div className="form-row">
                            <div className="col-12 col-sm-6 mb-3 mb-sm-0">
+                              <label for="date-of-birth">Date of birth</label>
                               <input
                                  type="date"
                                  className={classnames({
                                     "form-control": true,
                                     "is-invalid": this.state.dobError,
                                  })}
-                                 placeholder="Enter a date of birth"
+                                 // placeholder="Enter a date of birth"
                                  id="date-of-birth"
                               />
                               <div className="text-danger">
@@ -437,7 +444,13 @@ class Form extends React.Component {
                         defaultValue={""}
                         style={{ width: "100%" }}
                         placeholder={`In ${STORY_WORD_LIMIT} words or less, describe how you became a fan.`}
-                        // onChange={(e) => this.setAnswerText(e)}
+                        onChange={() => {
+                           this.setState({
+                              storyCharCount: document.getElementById(
+                                 "fan-story"
+                              ).value.length,
+                           });
+                        }}
                         id="fan-story"
                      ></textarea>
                      {/* <div
@@ -452,9 +465,7 @@ class Form extends React.Component {
                         {STORY_WORD_LIMIT}
                      </div> */}
                      <Counter
-                        count={
-                           50 //document.getElementById("fan-story").value.length
-                        }
+                        count={this.state.storyCharCount}
                         max={STORY_WORD_LIMIT}
                      />
                   </div>
