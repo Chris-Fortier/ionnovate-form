@@ -191,9 +191,9 @@ class Form extends React.Component {
                <div className="card mt-4">
                   <div className="card-body">
                      <h5 className="card-title">Account Information</h5>
-                     <h6 className="card-subtitle mb-2 text-muted">
+                     <p className="card-subtitle mb-2 text-muted">
                         * Fields marked with an asterisk are required.
-                     </h6>
+                     </p>
                      <div className="form-group">
                         <div className="form-row">
                            <div className="col-12 col-sm-6 mb-3 mb-sm-0">

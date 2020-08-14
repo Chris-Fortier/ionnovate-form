@@ -9,9 +9,10 @@ export default class Counter extends React.Component {
          <span
             className={classnames({
                "text-danger": checkIsOver(this.props.count, this.props.max),
+               counter: true,
             })}
          >
-            {this.props.count}/{this.props.max}
+            {this.props.count}&nbsp;/&nbsp;{this.props.max}
          </span>
       );
    }
