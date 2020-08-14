@@ -136,13 +136,9 @@ class Form extends React.Component {
       submission.favTeam = favTeamInput;
 
       // get followGamesVia
-      const followGamesViaInputs = {
-         tv: document.getElementById("tv").checked,
-         radio: document.getElementById("radio").checked,
-         internet: document.getElementById("internet").checked,
-         stadium: document.getElementById("stadium").checked,
-      };
-      submission.followGamesVia = followGamesViaInputs;
+      submission.followGamesVia = document.querySelector(
+         'input[name="follow-via"]:checked'
+      ).value;
 
       // get otherSportsInterests
       const otherSportsInterestInputs = {
@@ -162,6 +158,7 @@ class Form extends React.Component {
          submission.fanStory = fanStoryInput;
       }
 
+      // console.log(submission);
       return submission;
    }
 
@@ -341,63 +338,72 @@ class Form extends React.Component {
                      <div className="form-group">
                         <div className="form-row">
                            <div className="col-12 col-sm-6 mb-3 mb-sm-0">
-                              <p>How do you follow the games?</p>
-                              <div className="form-check">
-                                 <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    value=""
-                                    id="tv"
-                                 />
-                                 <label
-                                    className="form-check-label"
-                                    htmlFor="tv"
-                                 >
-                                    TV
-                                 </label>
-                              </div>
-                              <div className="form-check">
-                                 <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    value=""
-                                    id="radio"
-                                 />
-                                 <label
-                                    className="form-check-label"
-                                    htmlFor="radio"
-                                 >
-                                    Radio
-                                 </label>
-                              </div>
-                              <div className="form-check">
-                                 <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    value=""
-                                    id="internet"
-                                 />
-                                 <label
-                                    className="form-check-label"
-                                    htmlFor="internet"
-                                 >
-                                    Internet
-                                 </label>
-                              </div>
-                              <div className="form-check">
-                                 <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    value=""
-                                    id="stadium"
-                                 />
-                                 <label
-                                    className="form-check-label"
-                                    htmlFor="stadium"
-                                 >
-                                    At the stadium
-                                 </label>
-                              </div>
+                              <fieldset>
+                                 <legend>
+                                    How do you usually follow the games?
+                                 </legend>
+                                 <div className="form-check">
+                                    <input
+                                       className="form-check-input"
+                                       type="radio"
+                                       name="follow-via"
+                                       value="tv"
+                                       id="tv"
+                                       defaultChecked
+                                    />
+                                    <label
+                                       className="form-check-label"
+                                       htmlFor="tv"
+                                    >
+                                       TV
+                                    </label>
+                                 </div>
+                                 <div className="form-check">
+                                    <input
+                                       className="form-check-input"
+                                       type="radio"
+                                       name="follow-via"
+                                       value="radio"
+                                       id="radio"
+                                    />
+                                    <label
+                                       className="form-check-label"
+                                       htmlFor="radio"
+                                    >
+                                       Radio
+                                    </label>
+                                 </div>
+                                 <div className="form-check">
+                                    <input
+                                       className="form-check-input"
+                                       type="radio"
+                                       name="follow-via"
+                                       value="internet"
+                                       id="internet"
+                                    />
+                                    <label
+                                       className="form-check-label"
+                                       htmlFor="internet"
+                                    >
+                                       Internet
+                                    </label>
+                                 </div>
+                                 <div className="form-check">
+                                    <input
+                                       className="form-check-input"
+                                       type="radio"
+                                       name="follow-via"
+                                       value="stadium"
+                                       id="stadium"
+                                    />
+                                    <label
+                                       className="form-check-label"
+                                       htmlFor="stadium"
+                                    >
+                                       At the stadium
+                                    </label>
+                                 </div>
+                              </fieldset>
                            </div>
                            <div className="col-12 col-sm-6 mb-3 mb-sm-0">
                               <p>What other sports interests do you have?</p>
