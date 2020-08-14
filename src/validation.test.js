@@ -3,14 +3,23 @@ const {
    validateLastName,
    validateEmail,
    validatePhone,
+   validatePassword,
 } = require("./validation");
 
-// testing names
+// testing first names
 test("Testing an empty first name", () => {
    expect(validateFirstName("")).toBe("Please enter your first name.");
 });
 test("Testing a valid last name", () => {
    expect(validateFirstName("Chris")).toBe("");
+});
+
+// testing last names
+test("Testing an empty last name", () => {
+   expect(validateLastName("")).toBe("Please enter your last name.");
+});
+test("Testing a valid last name", () => {
+   expect(validateLastName("Fortier")).toBe("");
 });
 
 // testing email
@@ -59,4 +68,34 @@ test("Testing valid phone number: 7025551234", () => {
 });
 test("Testing valid phone number: 702.555.1234", () => {
    expect(validatePhone("702.555.1234")).toBe("");
+});
+
+// testing password inputs
+test("Testing empty password inputs", () => {
+   expect(validatePassword("", "")).toBe(
+      "Please enter a matching password in both fields."
+   );
+});
+test("Testing an empty first password input", () => {
+   expect(validatePassword("", "password")).toBe(
+      "Please enter a matching password in both fields."
+   );
+});
+test("Testing an empty second password input", () => {
+   expect(validatePassword("password", "")).toBe(
+      "Please enter a matching password in both fields."
+   );
+});
+test("Testing not matching password inputs", () => {
+   expect(validatePassword("password", "1234")).toBe(
+      "You password inputs do not match."
+   );
+});
+test("Testing short password", () => {
+   expect(validatePassword("password", "password")).toBe(
+      "Your password must be at least 10 characters long."
+   );
+});
+test("Testing valid password", () => {
+   expect(validatePassword("klhjsfda980345jkh", "klhjsfda980345jkh")).toBe("");
 });

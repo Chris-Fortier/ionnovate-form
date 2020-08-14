@@ -11,6 +11,7 @@ import {
    validateLastName,
    validateEmail,
    validatePhone,
+   validatePassword,
 } from "../../validation";
 
 const defaultState = {
@@ -18,8 +19,7 @@ const defaultState = {
    lastNameError: "",
    emailError: "",
    phoneError: "",
-   passwordError1: "",
-   passwordError2: "",
+   passwordError: "",
    dobError: "",
    storyError: "",
 };
@@ -77,34 +77,9 @@ class Form extends React.Component {
       // test password
       const passwordInput1 = document.getElementById("password-1").value;
       const passwordInput2 = document.getElementById("password-2").value;
-      let passwordInput1Good = false;
-      let passwordInput2Good = false;
-      if (passwordInput1 === "")
-         this.setState({
-            passwordError1: "Please enter a password.",
-         });
-      else if (passwordInput1.length < 10) {
-         this.setState({
-            passwordError1:
-               "Your password must be at least 10 characters long.",
-         });
-      } else {
-         passwordInput1Good = true;
-      }
-
-      if (passwordInput2 === "") {
-         this.setState({
-            passwordError2: "Please re-enter your password.",
-         });
-      } else if (passwordInput1 !== passwordInput2) {
-         this.setState({
-            passwordError2: "Your password inputs do not match.",
-         });
-      } else {
-         passwordInput2Good = true;
-      }
-
-      if (passwordInput1Good && passwordInput2Good) {
+      const passwordError = validatePassword(passwordInput1, passwordInput2);
+      this.setState({ passwordError });
+      if (passwordError === "") {
          submission.password = hash(passwordInput1);
       }
 
@@ -250,28 +225,25 @@ class Form extends React.Component {
                                  type="password"
                                  className={classnames({
                                     "form-control": true,
-                                    "is-invalid": this.state.passwordError1,
+                                    "is-invalid": this.state.passwordError,
                                  })}
                                  placeholder="Enter a password*"
                                  id="password-1"
                               />
-                              <div className="text-danger">
-                                 {this.state.passwordError1}
-                              </div>
                            </div>
-                           <div className="col-12 col-sm-6 mb-3 mb-sm-0">
+                           <div className="col-12 col-sm-6">
                               <input
                                  type="password"
                                  className={classnames({
                                     "form-control": true,
-                                    "is-invalid": this.state.passwordError2,
+                                    "is-invalid": this.state.passwordError,
                                  })}
                                  placeholder="Re-enter password*"
                                  id="password-2"
                               />
-                              <div className="text-danger">
-                                 {this.state.passwordError2}
-                              </div>
+                           </div>
+                           <div className="text-danger col">
+                              {this.state.passwordError}
                            </div>
                         </div>
                      </div>

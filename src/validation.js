@@ -37,5 +37,17 @@ module.exports = {
          return "";
       }
    },
+
+   validatePassword(passwordInput1, passwordInput2) {
+      if (passwordInput1 === "" || passwordInput2 === "") {
+         return "Please enter a matching password in both fields.";
+      } else if (passwordInput1 !== passwordInput2) {
+         return "You password inputs do not match.";
+      } else if (passwordInput1.length < 10) {
+         return "Your password must be at least 10 characters long.";
+      } else {
+         return "";
+      }
+   },
 };
 // module.exports =  validateHasText ;
