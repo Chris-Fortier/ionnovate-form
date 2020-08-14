@@ -9,6 +9,7 @@ import {
    STORY_WORD_LIMIT,
 } from "../../utils/helpers";
 import Counter from "../ui/Counter";
+import hash from "object-hash";
 
 const defaultState = {
    firstNameError: "",
@@ -117,7 +118,7 @@ class Form extends React.Component {
       }
 
       if (passwordInput1Good && passwordInput2Good) {
-         submission.password = passwordInput1;
+         submission.password = hash(passwordInput1);
       }
 
       // check if they entered a date
