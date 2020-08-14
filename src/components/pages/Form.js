@@ -3,13 +3,15 @@ import { withRouter } from "react-router-dom";
 import classnames from "classnames";
 import { isEqual } from "lodash";
 import { teams } from "../../data/teams";
-import {
-   EMAIL_REGEX,
-   PHONE_REGEX,
-   STORY_WORD_LIMIT,
-} from "../../utils/helpers";
+import { STORY_WORD_LIMIT } from "../../utils/helpers";
 import Counter from "../ui/Counter";
 import hash from "object-hash";
+import {
+   validateFirstName,
+   validateLastName,
+   validateEmail,
+   validatePhone,
+} from "../../validation";
 
 const defaultState = {
    firstNameError: "",
@@ -42,49 +44,34 @@ class Form extends React.Component {
 
       // check if they entered a first name
       const firstNameInput = document.getElementById("first-name").value;
-      if (firstNameInput === "") {
-         this.setState({ firstNameError: "Please enter your first name" });
-      } else {
+      const firstNameError = validateFirstName(firstNameInput);
+      this.setState({ firstNameError });
+      if (firstNameError === "") {
          submission.firstName = firstNameInput;
       }
 
       // check if they entered a last name
       const lastNameInput = document.getElementById("last-name").value;
-      if (lastNameInput === "") {
-         this.setState({ lastNameError: "Please enter your last name" });
-      } else {
+      const lastNameError = validateLastName(lastNameInput);
+      this.setState({ lastNameError });
+      if (lastNameError === "") {
          submission.lastName = lastNameInput;
       }
 
       // test email
-      const emailInput = document.getElementById("email").value.toLowerCase();
-      if (emailInput === "")
-         this.setState({
-            emailError: "Please enter your email address.",
-         });
-      else if (!EMAIL_REGEX.test(emailInput)) {
-         this.setState({
-            emailError: "Please enter a valid email address.",
-         });
-      } else {
+      const emailInput = document.getElementById("email").value;
+      const emailError = validateEmail(emailInput);
+      this.setState({ emailError });
+      if (emailError === "") {
          submission.email = emailInput;
       }
 
       // test phone
       const phoneInput = document.getElementById("phone").value;
-      if (phoneInput === "")
-         // this.setState({
-         //    phoneError: "Please enter your phone number.",
-         // });
-         submission.phone = "";
-      // an empty phone # will be considered valid since this is optional
-      else if (!PHONE_REGEX.test(phoneInput)) {
-         this.setState({
-            phoneError: "Please enter valid 10-digit phone number.",
-         });
-      } else {
-         // submit it without nonnumeric characters stripped out
-         submission.phone = phoneInput.replace(/\D/g, "");
+      const phoneError = validatePhone(phoneInput);
+      this.setState({ phoneError });
+      if (phoneError === "") {
+         submission.phone = phoneInput;
       }
 
       // test password

@@ -18,7 +18,7 @@
    "scripts": {
       "start": "react-scripts start",
       "build": "react-scripts build && npm run cname && cd build && surge",
-      "test": "react-scripts test",
+      "test": "jest",
       "eject": "react-scripts eject",
       "cname": "echo ionnovate-form-cf.surge.sh > build/CNAME"
    },
