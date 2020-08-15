@@ -81,7 +81,7 @@ class Form extends React.Component {
       const phoneError = validatePhone(phoneInput);
       this.setState({ phoneError });
       if (phoneError === "") {
-         submission.phone = phoneInput;
+         submission.phone = phoneInput.replace(/\D/g, "");
       }
 
       // test password
@@ -332,6 +332,19 @@ class Form extends React.Component {
                                           e.target.value
                                        ),
                                     });
+                                    const num = e.target.value.replace(
+                                       /\D/g,
+                                       ""
+                                    ); // get the number without any non-numeric characters
+                                    if (num.length === 10) {
+                                       e.target.value =
+                                          "(" +
+                                          num.slice(0, 3) +
+                                          ") " +
+                                          num.slice(3, 6) +
+                                          "-" +
+                                          num.slice(6, 10); // change it to use this formatting: (xxx) xxx-xxxx
+                                    }
                                  }}
                               />
                               <div className="text-danger">
