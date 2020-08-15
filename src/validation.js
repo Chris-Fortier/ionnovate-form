@@ -49,5 +49,15 @@ module.exports = {
          return "";
       }
    },
+
+   validateDob(dobInput) {
+      if (dobInput === "") {
+         return "Please enter your date of birth.";
+      } else if (Date.parse(dobInput) > Date.now()) {
+         return "Your birthday cannot be in the future.";
+      } else {
+         return "";
+      }
+   },
 };
 // module.exports =  validateHasText ;

@@ -12,6 +12,7 @@ import {
    validateEmail,
    validatePhone,
    validatePassword,
+   validateDob,
 } from "../../validation";
 import toDisplayDate from "date-fns/format";
 
@@ -93,13 +94,10 @@ class Form extends React.Component {
 
       // check if they entered a date
       const dobInput = document.getElementById("date-of-birth").value;
-      const parsedDob = Date.parse(dobInput);
-      if (dobInput === "") {
-         this.setState({ dobError: "Please enter your date of birth" });
-      } else if (parsedDob >= Date.now()) {
-         this.setState({ dobError: "Your birthday cannot be in the future." });
-      } else {
-         submission.dob = parsedDob;
+      const dobError = validateDob(dobInput);
+      this.setState({ dobError });
+      if (dobError === "") {
+         submission.dob = dobInput;
       }
 
       // get favorite team
@@ -176,11 +174,11 @@ class Form extends React.Component {
                   e.stopPropagation();
                }} // this stops it from doing the parent onClick event (stops it from closing if you click inside the modal)
             >
-               <h2>
+               <h3>
                   NFL Fan Club
                   <br />
                   Membership Card
-               </h2>
+               </h3>
                <table className="table table-borderless mb-0">
                   <tbody>
                      <tr>
@@ -403,6 +401,12 @@ class Form extends React.Component {
                                  })}
                                  // placeholder="Enter a date of birth"
                                  id="date-of-birth"
+                                 onBlur={(e) => {
+                                    // check dob
+                                    this.setState({
+                                       dobError: validateDob(e.target.value),
+                                    });
+                                 }}
                               />
                               <div className="text-danger">
                                  {this.state.dobError}

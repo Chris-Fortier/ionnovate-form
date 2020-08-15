@@ -4,6 +4,7 @@ const {
    validateEmail,
    validatePhone,
    validatePassword,
+   validateDob,
 } = require("./validation");
 
 // testing first names
@@ -98,4 +99,17 @@ test("Testing short password", () => {
 });
 test("Testing valid password", () => {
    expect(validatePassword("klhjsfda980345jkh", "klhjsfda980345jkh")).toBe("");
+});
+
+// testing dob
+test("Testing an empty dob", () => {
+   expect(validateDob("")).toBe("Please enter your date of birth.");
+});
+test("Testing an invalid dob", () => {
+   expect(validateDob("2100-01-01")).toBe(
+      "Your birthday cannot be in the future."
+   );
+});
+test("Testing a valid dob", () => {
+   expect(validateDob("1950-01-01")).toBe("");
 });
