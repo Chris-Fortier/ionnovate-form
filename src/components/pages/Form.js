@@ -13,6 +13,7 @@ import {
    validatePhone,
    validatePassword,
 } from "../../validation";
+import toDisplayDate from "date-fns/format";
 
 const defaultState = {
    firstNameError: "",
@@ -27,7 +28,12 @@ const defaultState = {
 class Form extends React.Component {
    constructor(props) {
       super(props);
-      this.state = { ...defaultState, storyCharCount: 0 };
+      this.state = {
+         ...defaultState,
+         storyCharCount: 0,
+         isShowingMembershipCard: false,
+         submission: {},
+      };
    }
 
    validateForm() {
@@ -37,6 +43,8 @@ class Form extends React.Component {
       this.setState({
          ...defaultState,
          storyCharCount: this.state.storyCharCount,
+         isShowingMembershipCard: this.state.isShowingMembershipCard,
+         submission: this.state.submission,
       });
 
       // initialize the submission object
@@ -133,20 +141,100 @@ class Form extends React.Component {
       const compareState = {
          ...defaultState,
          storyCharCount: this.state.storyCharCount,
+         isShowingMembershipCard: this.state.isShowingMembershipCard,
+         submission: this.state.submission,
       };
 
       // if there are no errors, console log the submission
       if (isEqual(this.state, compareState)) {
          console.log("Submission looks good", submission);
+         this.setState({ isShowingMembershipCard: true, submission });
       } else {
          console.log("There were errors", this.state);
       }
    }
 
+   // toggle the membership card
+   toggleMembershipCardDisplay() {
+      this.setState({
+         isShowingMembershipCard: !this.state.isShowingMembershipCard,
+      });
+   }
+
+   renderMembershipCard() {
+      return (
+         <div
+            id="myModal"
+            className="modal"
+            onClick={() => {
+               this.toggleMembershipCardDisplay();
+            }}
+         >
+            <div
+               className="modal-content"
+               onClick={(e) => {
+                  e.stopPropagation();
+               }} // this stops it from doing the parent onClick event (stops it from closing if you click inside the modal)
+            >
+               <h2>
+                  NFL Fan Club
+                  <br />
+                  Membership Card
+               </h2>
+               <table className="table table-borderless mb-0">
+                  <tbody>
+                     <tr>
+                        <th scope="row">Name</th>
+                        <td>
+                           {this.state.submission.firstName}&nbsp;
+                           {this.state.submission.lastName}
+                        </td>
+                     </tr>
+                     <tr>
+                        <th scope="row">Email</th>
+                        <td>{this.state.submission.email}</td>
+                     </tr>
+                     <tr>
+                        <th scope="row">Member Since</th>
+                        <td>{toDisplayDate(Date.now(), "MMM dd, yyyy")}</td>
+                     </tr>
+                     <tr>
+                        <th scope="row">Rank</th>
+                        <td>Rookie</td>
+                     </tr>
+                     <tr>
+                        <th></th>
+                        <td>
+                           <img
+                              className="float-right"
+                              src={
+                                 teams.find((team) => {
+                                    return (
+                                       team.code ===
+                                       this.state.submission.favTeam
+                                    );
+                                 }).logo
+                              }
+                              alt="team logo"
+                              width="120px"
+                           />
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      );
+   }
+
    render() {
       return (
          <div className="container">
-            <h1>NFL Fan Club Membership Application</h1>
+            <h1>
+               NFL Fan Club
+               <br />
+               Membership Application
+            </h1>
             <form formNoValidate>
                <div className="card mt-4">
                   <div className="card-body">
@@ -280,9 +368,6 @@ class Form extends React.Component {
                                  className="form-control"
                                  id="favorite-team"
                               >
-                                 <option value="" key="xxx">
-                                    Favorite Team (Optional)
-                                 </option>
                                  {teams.map((team, i) => {
                                     return (
                                        <option value={team.code} key={i}>
@@ -473,6 +558,7 @@ class Form extends React.Component {
                   Submit
                </div>
             </form>
+            {this.state.isShowingMembershipCard && this.renderMembershipCard()}
          </div>
       );
    }
