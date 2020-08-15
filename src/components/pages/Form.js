@@ -39,7 +39,7 @@ class Form extends React.Component {
    }
 
    validateForm() {
-      console.log("Submitting form");
+      console.log("Validating form...");
 
       // initialize errors
       this.setState({
@@ -90,7 +90,7 @@ class Form extends React.Component {
       const passwordError = validatePassword(passwordInput1, passwordInput2);
       this.setState({ passwordError });
       if (passwordError === "") {
-         submission.password = hash(passwordInput1);
+         submission.hashedPassword = hash(passwordInput1);
       }
 
       // check if they entered a date
@@ -146,10 +146,10 @@ class Form extends React.Component {
 
       // if there are no errors, console log the submission
       if (isEqual(this.state, compareState)) {
-         console.log("Submission looks good", submission);
+         console.log("Submission looks good:", submission);
          this.setState({ isShowingMembershipCard: true, submission });
       } else {
-         console.log("There were errors", this.state);
+         console.log("There were errors:", this.state);
          this.setState({
             submitError: "You must fix your errors above before submitting.",
          });
