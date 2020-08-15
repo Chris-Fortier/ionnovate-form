@@ -253,6 +253,14 @@ class Form extends React.Component {
                                  })}
                                  placeholder="First name*"
                                  id="first-name"
+                                 onBlur={(e) => {
+                                    // check if they entered a first name
+                                    this.setState({
+                                       firstNameError: validateFirstName(
+                                          e.target.value
+                                       ),
+                                    });
+                                 }}
                               />
                               <div className="text-danger">
                                  {this.state.firstNameError}
@@ -267,6 +275,14 @@ class Form extends React.Component {
                                  })}
                                  placeholder="Last name*"
                                  id="last-name"
+                                 onBlur={(e) => {
+                                    // check if they entered a last name
+                                    this.setState({
+                                       lastNameError: validateLastName(
+                                          e.target.value
+                                       ),
+                                    });
+                                 }}
                               />
                               <div className="text-danger">
                                  {this.state.lastNameError}
@@ -285,6 +301,14 @@ class Form extends React.Component {
                                  })}
                                  placeholder="Email*"
                                  id="email"
+                                 onBlur={(e) => {
+                                    // check email
+                                    this.setState({
+                                       emailError: validateEmail(
+                                          e.target.value
+                                       ),
+                                    });
+                                 }}
                               />
                               <div className="text-danger">
                                  {this.state.emailError}
@@ -299,6 +323,14 @@ class Form extends React.Component {
                                  })}
                                  placeholder="Phone (optional)"
                                  id="phone"
+                                 onBlur={(e) => {
+                                    // check phone number
+                                    this.setState({
+                                       phoneError: validatePhone(
+                                          e.target.value
+                                       ),
+                                    });
+                                 }}
                               />
                               <div className="text-danger">
                                  {this.state.phoneError}
@@ -317,6 +349,17 @@ class Form extends React.Component {
                                  })}
                                  placeholder="Enter a password*"
                                  id="password-1"
+                                 onBlur={() => {
+                                    // check password inputs
+                                    this.setState({
+                                       passwordError: validatePassword(
+                                          document.getElementById("password-1")
+                                             .value,
+                                          document.getElementById("password-2")
+                                             .value
+                                       ),
+                                    });
+                                 }}
                               />
                            </div>
                            <div className="col-12 col-sm-6">
@@ -328,6 +371,17 @@ class Form extends React.Component {
                                  })}
                                  placeholder="Re-enter password*"
                                  id="password-2"
+                                 onBlur={() => {
+                                    // check password inputs
+                                    this.setState({
+                                       passwordError: validatePassword(
+                                          document.getElementById("password-1")
+                                             .value,
+                                          document.getElementById("password-2")
+                                             .value
+                                       ),
+                                    });
+                                 }}
                               />
                            </div>
                            <div className="text-danger col">
@@ -530,12 +584,19 @@ class Form extends React.Component {
                         defaultValue={""}
                         style={{ width: "100%" }}
                         placeholder={`In ${STORY_WORD_LIMIT} words or less, describe how you became a fan.`}
-                        onChange={() => {
+                        onChange={(e) => {
                            this.setState({
-                              storyCharCount: document.getElementById(
-                                 "fan-story"
-                              ).value.length,
+                              storyCharCount: e.target.value.length,
                            });
+                           if (e.target.value.length > STORY_WORD_LIMIT) {
+                              this.setState({
+                                 storyError: " Please shorten your text.",
+                              });
+                           } else {
+                              this.setState({
+                                 storyError: "",
+                              });
+                           }
                         }}
                         id="fan-story"
                      ></textarea>
