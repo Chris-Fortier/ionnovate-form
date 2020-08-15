@@ -55,6 +55,8 @@ module.exports = {
          return "Please enter your date of birth.";
       } else if (Date.parse(dobInput) > Date.now()) {
          return "Your birthday cannot be in the future.";
+      } else if (Date.parse(dobInput) < Date.parse("1900-01-01")) {
+         return "Your birthday must be later than 1900.";
       } else {
          return "";
       }

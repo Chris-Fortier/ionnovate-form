@@ -40,7 +40,7 @@ textarea,
 .btn {
    background-color: $green;
    color: $navy;
-   margin-bottom: 64px;
+   // margin-bottom: 64px;
 }
 .btn:hover {
    background-color: darken($green, $hover-darken);

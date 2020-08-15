@@ -24,6 +24,7 @@ const defaultState = {
    passwordError: "",
    dobError: "",
    storyError: "",
+   submitError: "",
 };
 
 class Form extends React.Component {
@@ -97,7 +98,7 @@ class Form extends React.Component {
       const dobError = validateDob(dobInput);
       this.setState({ dobError });
       if (dobError === "") {
-         submission.dob = dobInput;
+         submission.dob = Date.parse(dobInput);
       }
 
       // get favorite team
@@ -149,6 +150,9 @@ class Form extends React.Component {
          this.setState({ isShowingMembershipCard: true, submission });
       } else {
          console.log("There were errors", this.state);
+         this.setState({
+            submitError: "You must fix your errors above before submitting.",
+         });
       }
    }
 
@@ -613,15 +617,26 @@ class Form extends React.Component {
                      </span>
                   </div>
                </div>
-               <div
-                  type="submit"
-                  className="btn btn-primary mt-4"
-                  onClick={() => {
-                     this.submit();
-                  }}
-               >
-                  Submit
+               <div className="row">
+                  <div className="col-12 col-sm-6">
+                     <span
+                        type="submit"
+                        className="btn btn-primary mt-4 btn-block"
+                        onClick={() => {
+                           this.submit();
+                        }}
+                     >
+                        Submit
+                     </span>
+                  </div>
+
+                  <div className="col col-12 col-sm-6 mt-sm-4">
+                     <span className="text-danger">
+                        {this.state.submitError}
+                     </span>
+                  </div>
                </div>
+               <div className="row" style={{ height: "64px" }}></div>
             </form>
             {this.state.isShowingMembershipCard && this.renderMembershipCard()}
          </div>

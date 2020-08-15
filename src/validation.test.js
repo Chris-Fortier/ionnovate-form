@@ -105,7 +105,12 @@ test("Testing valid password", () => {
 test("Testing an empty dob", () => {
    expect(validateDob("")).toBe("Please enter your date of birth.");
 });
-test("Testing an invalid dob", () => {
+test("Testing dob that is too early", () => {
+   expect(validateDob("1850-01-01")).toBe(
+      "Your birthday must be later than 1900."
+   );
+});
+test("Testing a dob that is too late", () => {
    expect(validateDob("2100-01-01")).toBe(
       "Your birthday cannot be in the future."
    );
